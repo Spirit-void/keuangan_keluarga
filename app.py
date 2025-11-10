@@ -17,12 +17,12 @@ st.markdown("---")
 
 # 🔐 Setup koneksi ke Google Sheets (TIDAK DIUBAH sesuai permintaan)
 try:
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    # Asumsi file 'credentials.json' ada di direktori yang sama
-    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
-    client = gspread.authorize(creds)
-    # Asumsi nama sheet utama: KeuanganKeluarga dan kita pakai sheet pertama
-    sheet = client.open("KeuanganKeluarga").sheet1
+    sscope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+creds_dict = st.secrets["google"]
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+client = gspread.authorize(creds)
+sheet = client.open("KeuanganKeluarga").sheet1
+
     connection_status = True
 except Exception as e:
     st.error(f"❌ Kesalahan koneksi Google Sheets. Pastikan 'credentials.json' sudah benar dan terotorisasi. Error: {e}")
