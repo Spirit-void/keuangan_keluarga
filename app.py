@@ -15,17 +15,19 @@ st.set_page_config(
 st.title("💸 Dashboard Keuangan Keluarga")
 st.markdown("---")
 
-# 🔐 Setup koneksi ke Google Sheets (TIDAK DIUBAH sesuai permintaan)
+# 🔐 Setup koneksi ke Google Sheets
 try:
-    sscope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds_dict = st.secrets["google"]
-creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-client = gspread.authorize(creds)
-sheet = client.open("KeuanganKeluarga").sheet1
+    # FIX 1 & 2: Memperbaiki typo 'sscope' menjadi 'scope' dan memastikan semua ada dalam blok try.
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds_dict = st.secrets["google"]
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    client = gspread.authorize(creds)
+    sheet = client.open("KeuanganKeluarga").sheet1
 
     connection_status = True
 except Exception as e:
-    st.error(f"❌ Kesalahan koneksi Google Sheets. Pastikan 'credentials.json' sudah benar dan terotorisasi. Error: {e}")
+    # Mengganti pesan error agar sesuai dengan penggunaan st.secrets
+    st.error(f"❌ Kesalahan koneksi Google Sheets. Pastikan kunci 'google' di secrets.toml sudah benar. Error: {e}")
     connection_status = False
 
 # Fungsi untuk memformat Rupiah
